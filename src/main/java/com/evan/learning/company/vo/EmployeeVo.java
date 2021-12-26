@@ -1,23 +1,23 @@
-package com.evan.learning.company.model;
+package com.evan.learning.company.vo;
 
+import com.evan.learning.company.model.EmployeeKey;
 
-import javax.persistence.*;
-import java.io.Serializable;
 import java.math.BigDecimal;
 
-@Table
-@Entity
-@IdClass(EmployeeKey.class)
-public class Employee implements Serializable {
-    private static final long serialVersionUID = 1L;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+public class EmployeeVo {
     private int id;
-    @Id
     private int departmentId;
+    private String departmentName;
     private String name;
     private BigDecimal salary;
+
+    public String getDepartmentName() {
+        return departmentName;
+    }
+
+    public void setDepartmentName(String departmentName) {
+        this.departmentName = departmentName;
+    }
 
     public int getId() {
         return id;
