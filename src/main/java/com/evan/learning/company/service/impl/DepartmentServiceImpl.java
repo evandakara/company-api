@@ -1,7 +1,10 @@
 package com.evan.learning.company.service.impl;
 
 import com.evan.learning.company.model.Department;
+import com.evan.learning.company.model.Employee;
+import com.evan.learning.company.model.EmployeeKey;
 import com.evan.learning.company.repository.DepartmentRepository;
+import com.evan.learning.company.repository.EmployeeRepository;
 import com.evan.learning.company.service.DepartmentService;
 import com.evan.learning.company.vo.DepartmentVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +19,9 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Autowired
     DepartmentRepository departmentRepository;
+
+    @Autowired
+    EmployeeRepository employeeRepository;
 
     @Transactional
     @Override
@@ -111,5 +117,37 @@ public class DepartmentServiceImpl implements DepartmentService {
         return false;
     }
 
-
+    public DepartmentVo deactivate(Integer sourceDepartmentId, Integer targetDepartmentId) {
+        DepartmentVo departmentVo = new DepartmentVo();
+        if (sourceDepartmentId != null) {
+            Department department = departmentRepository.findById(sourceDepartmentId).orElse(null);
+            Department departmentNew = new Department();
+            if (department != null) {
+//                departmentNew.setDepartmentName(department.getDepartmentName());
+//                departmentNew.setStatus(0);
+//                departmentRepository.save(departmentNew);
+                List<Employee> listEmployee = employeeRepository.findByDepartmentId(sourceDepartmentId);
+                if (listEmployee != null) {
+                    for (Employee employee : listEmployee) {
+                        Employee employeeNew = new Employee();
+                        employeeNew.setId(employee.getId());
+                        employeeNew.setDepartmentId(targetDepartmentId);
+                        employeeNew.setName(employee.getName());
+                        employeeNew.setSalary(employee.getSalary());
+                        employeeRepository.save(employeeNew);
+//                        EmployeeKey employeeKey = new EmployeeKey();
+//                        employeeKey.setId(employee.getId());
+//                        employeeKey.setDepartmentId(targetDepartmentId);
+                        employeeRepository.delete(employee);
+                    }
+                }
+                department.setStatus(0);
+                departmentRepository.save(department);
+            }
+            departmentVo.setId(department.getId());
+            departmentVo.setName(department.getDepartmentName());
+            departmentVo.setStatus(department.getStatus());
+        }
+        return departmentVo;
+    }
 }

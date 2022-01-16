@@ -19,4 +19,6 @@ public interface DepartmentService extends Serializable {
     DepartmentVo update(Integer id, String name);
 
     boolean delete(Integer id);
+
+    DepartmentVo deactivate(Integer sourceDepartmentId, Integer targetDepartmentId);
 }

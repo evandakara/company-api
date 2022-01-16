@@ -54,4 +54,10 @@ public class DepartmentController {
     public boolean delete(@RequestParam(required = true, name = "id") Integer departmentId) {
         return departmentServiceImpl.delete(departmentId);
     }
+
+    @PatchMapping(value = "/deactivate")
+    public DepartmentVo deactivate(@RequestParam(required = true, name = "source") Integer sourceDepartmentId,
+                                   @RequestParam(required = true, name = "target") Integer targetDepartmentId) {
+        return departmentServiceImpl.deactivate(sourceDepartmentId, targetDepartmentId);
+    }
 }
