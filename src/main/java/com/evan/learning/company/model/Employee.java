@@ -7,32 +7,43 @@ import java.math.BigDecimal;
 
 @Table
 @Entity
-@IdClass(EmployeeKey.class)
+//@IdClass(EmployeeKey.class)
 public class Employee implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
-    @Id
-    private int departmentId;
+
+    @EmbeddedId
+    private EmployeeKey employeeKey;
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.AUTO)
+//    private int id;
+//    @Id
+//    private int departmentId;
     private String name;
     private BigDecimal salary;
+//
+//    public int getId() {
+//        return id;
+//    }
+//
+//    public void setId(int id) {
+//        this.id = id;
+//    }
+//
+//    public int getDepartmentId() {
+//        return departmentId;
+//    }
+//
+//    public void setDepartmentId(int departmentId) {
+//        this.departmentId = departmentId;
+//    }
 
-    public int getId() {
-        return id;
+    public EmployeeKey getEmployeeKey() {
+        return employeeKey;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getDepartmentId() {
-        return departmentId;
-    }
-
-    public void setDepartmentId(int departmentId) {
-        this.departmentId = departmentId;
+    public void setEmployeeKey(EmployeeKey employeeKey) {
+        this.employeeKey = employeeKey;
     }
 
     public String getName() {

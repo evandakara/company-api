@@ -34,10 +34,10 @@ public class EmployeeServiceImpl implements EmployeeService {
             employeeKey.setDepartmentId(employeeVo.getDepartmentId());
             employee.setName(employeeVo.getName());
             employee.setSalary(employeeVo.getSalary());
-//            employee.setEmployeeKey(employeeKey);
-            employee.setDepartmentId(employeeVo.getDepartmentId());
+            employee.setEmployeeKey(employeeKey);
+//            employee.setDepartmentId(employeeVo.getDepartmentId());
             employeeRepository.save(employee);
-            employeeVo.setId(employee.getId());
+            employeeVo.setId(employee.getEmployeeKey().getId());
         }
         return employeeVo;
     }
@@ -50,11 +50,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public EmployeeVo findByEmployeeId(Integer id) {
         EmployeeVo employeeVo = null;
-        Employee employee = employeeRepository.findEmployeeById(id);
+        Employee employee = employeeRepository.findEmployeeByEmployeeKey_Id(id);
         if (employee != null) {
             employeeVo = new EmployeeVo();
             employeeVo.setId(id);
-            employeeVo.setDepartmentId(employee.getDepartmentId());
+            employeeVo.setDepartmentId(employee.getEmployeeKey().getDepartmentId());
             employeeVo.setName(employee.getName());
             employeeVo.setSalary(employee.getSalary());
         }
@@ -71,8 +71,8 @@ public class EmployeeServiceImpl implements EmployeeService {
             EmployeeVo employeeVo = null;
             for (Employee employee : listEmployee) {
                 employeeVo = new EmployeeVo();
-                employeeVo.setId(employee.getId());
-                employeeVo.setDepartmentId(employee.getDepartmentId());
+                employeeVo.setId(employee.getEmployeeKey().getId());
+                employeeVo.setDepartmentId(employee.getEmployeeKey().getDepartmentId());
                 employeeVo.setName(employee.getName());
                 employeeVo.setSalary(employee.getSalary());
                 listEmployeeVo.add(employeeVo);
@@ -85,16 +85,16 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public List<EmployeeVo> findByDepartmentId(Integer id) {
         List<EmployeeVo> listEmployeeVo = null;
-        List<Employee> listEmployee = employeeRepository.findByDepartmentId(id);
+        List<Employee> listEmployee = employeeRepository.findEmployeeByEmployeeKey_DepartmentId(id);
         if (listEmployee != null) {
             listEmployeeVo = new ArrayList<>();
             EmployeeVo employeeVo = null;
             Department department = null;
             for (Employee employee : listEmployee) {
-                department = departmentRepository.findById(employee.getDepartmentId()).orElse(null);
+                department = departmentRepository.findById(employee.getEmployeeKey().getDepartmentId()).orElse(null);
                 employeeVo = new EmployeeVo();
-                employeeVo.setId(employee.getId());
-                employeeVo.setDepartmentId(employee.getDepartmentId());
+                employeeVo.setId(employee.getEmployeeKey().getId());
+                employeeVo.setDepartmentId(employee.getEmployeeKey().getDepartmentId());
                 employeeVo.setName(employee.getName());
                 employeeVo.setSalary(employee.getSalary());
                 employeeVo.setDepartmentName(department.getDepartmentName());

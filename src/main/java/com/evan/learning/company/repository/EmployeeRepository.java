@@ -11,7 +11,8 @@ import java.util.List;
 
 @Repository
 public interface EmployeeRepository  extends CrudRepository<Employee, EmployeeKey> {
-    Employee findEmployeeById(Integer id);
-    List<Employee> findByDepartmentId(Integer id);
+    Employee findEmployeeByEmployeeKey_Id(Integer id);
+    List<Employee> findEmployeeByEmployeeKey_DepartmentId(Integer id);
     List<Employee> findAll();
+
 }

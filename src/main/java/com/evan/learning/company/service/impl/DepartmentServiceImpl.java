@@ -126,19 +126,26 @@ public class DepartmentServiceImpl implements DepartmentService {
 //                departmentNew.setDepartmentName(department.getDepartmentName());
 //                departmentNew.setStatus(0);
 //                departmentRepository.save(departmentNew);
-                List<Employee> listEmployee = employeeRepository.findByDepartmentId(sourceDepartmentId);
+                List<Employee> listEmployee = employeeRepository.findEmployeeByEmployeeKey_DepartmentId(sourceDepartmentId);
                 if (listEmployee != null) {
                     for (Employee employee : listEmployee) {
+                        // Pendekatan 1
                         Employee employeeNew = new Employee();
-                        employeeNew.setId(employee.getId());
-                        employeeNew.setDepartmentId(targetDepartmentId);
                         employeeNew.setName(employee.getName());
                         employeeNew.setSalary(employee.getSalary());
+                        EmployeeKey employeeKey = new EmployeeKey();
+                        employeeKey.setId(employee.getEmployeeKey().getId());
+                        employeeKey.setDepartmentId(targetDepartmentId);
+                        employeeNew.setEmployeeKey(employeeKey);
                         employeeRepository.save(employeeNew);
-//                        EmployeeKey employeeKey = new EmployeeKey();
-//                        employeeKey.setId(employee.getId());
-//                        employeeKey.setDepartmentId(targetDepartmentId);
                         employeeRepository.delete(employee);
+                        // Pendekatan 2
+//                        employee.getEmployeeKey().setId(employee.getEmployeeKey().getId());
+//                        employee.getEmployeeKey().setDepartmentId(targetDepartmentId);
+//                        EmployeeKey employeeKey = new EmployeeKey();
+//                        employeeKey.setId(employee.getEmployeeKey().getId());
+//                        employeeKey.setDepartmentId(employee.getEmployeeKey().getDepartmentId());
+//                        employee.setEmployeeKey(employeeKey);
                     }
                 }
                 department.setStatus(0);

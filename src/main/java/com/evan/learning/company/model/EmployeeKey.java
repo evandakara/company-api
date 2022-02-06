@@ -1,11 +1,14 @@
 package com.evan.learning.company.model;
 
 import javax.persistence.Embeddable;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.io.Serializable;
 
 @Embeddable
 public class EmployeeKey implements Serializable {
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private int departmentId;
 
