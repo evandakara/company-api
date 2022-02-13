@@ -118,14 +118,11 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     public DepartmentVo deactivate(Integer sourceDepartmentId, Integer targetDepartmentId) {
-        DepartmentVo departmentVo = new DepartmentVo();
+        DepartmentVo departmentVo = null;
         if (sourceDepartmentId != null) {
             Department department = departmentRepository.findById(sourceDepartmentId).orElse(null);
-            Department departmentNew = new Department();
             if (department != null) {
-//                departmentNew.setDepartmentName(department.getDepartmentName());
-//                departmentNew.setStatus(0);
-//                departmentRepository.save(departmentNew);
+                departmentVo = new DepartmentVo();
                 List<Employee> listEmployee = employeeRepository.findEmployeeByEmployeeKey_DepartmentId(sourceDepartmentId);
                 if (listEmployee != null) {
                     for (Employee employee : listEmployee) {
@@ -150,10 +147,11 @@ public class DepartmentServiceImpl implements DepartmentService {
                 }
                 department.setStatus(0);
                 departmentRepository.save(department);
+
+                departmentVo.setId(department.getId());
+                departmentVo.setName(department.getDepartmentName());
+                departmentVo.setStatus(department.getStatus());
             }
-            departmentVo.setId(department.getId());
-            departmentVo.setName(department.getDepartmentName());
-            departmentVo.setStatus(department.getStatus());
         }
         return departmentVo;
     }
