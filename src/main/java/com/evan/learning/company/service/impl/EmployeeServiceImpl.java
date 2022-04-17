@@ -55,7 +55,9 @@ public class EmployeeServiceImpl implements EmployeeService {
             employeeVo = new EmployeeVo();
             employeeVo.setId(id);
             employeeVo.setDepartmentId(employee.getEmployeeKey().getDepartmentId());
+            Department department = departmentRepository.findById(employeeVo.getDepartmentId()).orElse(null);
             employeeVo.setName(employee.getName());
+            employeeVo.setDepartmentName(department.getDepartmentName());
             employeeVo.setSalary(employee.getSalary());
         }
         return employeeVo;
